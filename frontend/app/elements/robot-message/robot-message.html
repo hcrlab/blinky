@@ -1,0 +1,88 @@
+<!--
+@license
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<dom-module id="robot-message">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+      .speech {
+        background-color: #fff;
+        margin: 1em;
+        padding: 1em;
+        position: relative;
+        max-width: 910px;
+      }
+      
+      .speech:after {
+        border-color: #fff transparent;
+        border-style: solid;
+        border-width: 15px 15px 0;
+        bottom: -15px;
+        content: "";
+        display: block;
+        left: 10px;
+        position: absolute;
+        width: 0;
+      }
+
+      .speech.user {
+        margin-left: 40px;
+      }
+
+      .speech.user:after {
+        right: 10px;
+        left: initial;
+      }
+
+      .speech > ::content .centered {
+        text-align: center;
+      }
+
+      .speech > ::content h1, h2, h3 {
+        margin: 0;
+      }
+
+      .speech > ::content .disp4 {
+        font-weight: lighter;
+        font-size: 112px;
+      }
+      .speech > ::content .disp3 {
+        font-size: 56px;
+      }
+      .speech > ::content .disp2 {
+        font-size: 45px;
+      }
+      .speech > ::content .disp1 {
+        font-size: 34px;
+      }
+
+    </style>
+    <paper-material raised class$="speech {{speaker}}">
+      <content></content>
+    </paper-material>
+  </template>
+  <script>
+  (function() {
+    'use strict';
+
+    Polymer({
+      is: 'robot-message',
+
+      properties: {
+        speaker: String,
+      },
+    });
+  })();
+  </script>
+</dom-module>

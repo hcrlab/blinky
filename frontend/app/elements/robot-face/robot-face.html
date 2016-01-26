@@ -1,0 +1,106 @@
+<!--
+@license
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<dom-module id="robot-face">
+  <template>
+    <style>
+      :host {
+        display: block;
+        width: 100%;
+        height: 100%;
+        background-color: #512DA8;
+        position: fixed;
+        font-family: 'Roboto', sans-serif;
+      }
+      #face {
+        width: 90%;
+        margin: 0px auto;
+        height: 120px;
+        position: fixed;
+        bottom: 0;
+        left: 5%;
+      }
+      robot-eye {
+        width: 100px;
+      }
+
+      #faceContent {
+        max-height: 390px;
+        overflow: auto;
+      }
+
+      #faceContent > ::content robot-message + robot-message {
+        margin-top: 30px;
+      }
+    </style>
+    <div id="faceContent">
+      <iron-pages attr-for-selected="data-type" selected="{{displayType}}">
+        <div data-type="default"></div> 
+        <div data-type="displayMessage">
+          <robot-message>
+            <div class="centered">
+              <div class="disp4">{{h1Text}}</div>
+              <div class="disp3">{{h2Text}}</div>
+            </div>
+          </robot-message>
+        </div> 
+      </iron-pages>
+    </div>
+    <div id="face" class="layout horizontal">
+      <robot-eye id="leftEye" on-tap="blink"></robot-eye>
+      <div class="flex"></div>
+      <robot-mouth></robot-mouth>
+      <div class="flex"></div>
+      <robot-eye id="rightEye" on-tap="blink"></robot-eye>
+    </div>
+    </div>
+  </template>
+  <script>
+  (function() {
+    'use strict';
+
+    Polymer({
+      is: 'robot-face',
+
+      properties: {
+        displayType: {
+          type: String,
+          value: 'default',
+        },
+        h1Text: {
+          type: String,
+          value: '',
+        },
+        h2Text: {
+          type: String,
+          value: '',
+        },
+      },
+
+      ready: function() {
+        this.blinkRandomly();
+      },
+
+      blinkRandomly: function() {
+        var nextBlink = Math.random() * 3000 + 2500;
+        var that = this;
+        setTimeout(function() { that.blink(); that.blinkRandomly(); }, nextBlink);
+      },
+
+      blink: function() {
+        this.$.leftEye.blink();
+        this.$.rightEye.blink();
+      }
+    });
+  })();
+  </script>
+</dom-module>
