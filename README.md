@@ -1,7 +1,7 @@
 # Blinky
 A web-based touchscreen face for HRI research.
 It has a ROS interface for changing the face and calling behaviors.
-Blinky is primarily designed and tested from Chrome on a Nexus 7 (2013) tablet.
+Blinky is primarily designed and tested for Chrome on a Nexus 7 (2013) tablet.
 
 ![blinky](https://cloud.githubusercontent.com/assets/1175286/12600875/baf9204c-c451-11e5-98f5-7fbaa8b57a9e.png)
 
