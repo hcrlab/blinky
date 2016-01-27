@@ -6,6 +6,12 @@ Blinky is primarily designed and tested for Chrome on a Nexus 7 (2013) tablet.
 ![blinky](https://cloud.githubusercontent.com/assets/1175286/12600875/baf9204c-c451-11e5-98f5-7fbaa8b57a9e.png)
 
 ## Getting started
+- Install the latest version of node:
+
+  ```
+  curl -sL https://deb.nodesource.com/setup_5.x | sudo -E bash -
+  sudo apt-get install -y nodejs
+  ```
 - Clone this repository to your catkin workspace and build it.
 - From the `frontend` folder, run `npm install -g gulp bower && npm install && bower install`
 - Run `roslaunch rosbridge_server rosbridge_websocket.launch`
@@ -35,8 +41,9 @@ goal:
 ```
 
 ## Deploying
-Deployment instructions coming soon.
-Note this project is still in development.
+- Install Apache: `sudo apt-get install apache2`
+
+Note this section is still in development.
 
 ## Behaviors
 ### displayMessage(h1_text, h2_text)
