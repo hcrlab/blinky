@@ -109,14 +109,10 @@ ssh -X robot
 google-chrome
 ```
 
-On the tablet, enable USB debugging.
+On the tablet, enable USB debugging (see [Remote Debugging Devices](https://developers.google.com/web/tools/chrome-devtools/debug/remote-debugging/remote-debugging?hl=en)).
 From Chrome, go to `chrome://inspect`.
 You should see the Nexus 7 in the device list.
-Go to port forwarding and forward port 8080 to `localhost:8080` and port 9090 to `localhost:9090` (which is necessary for the rosbridge websocket connection).
-
-More resources:
-- Chrome developers docs: [Remote Access to Your Local Site](https://developers.google.com/web/tools/chrome-devtools/debug/remote-debugging/local-server?hl=en)
-- Chrome developers docs: [Remote Debugging Devices](https://developers.google.com/web/tools/chrome-devtools/debug/remote-debugging/remote-debugging?hl=en)
+Go to port forwarding and forward port 8080 to `localhost:8080` and port 9090 to `localhost:9090`, which is necessary for the rosbridge websocket connection (see [Remote Access to Your Local Site](https://developers.google.com/web/tools/chrome-devtools/debug/remote-debugging/local-server?hl=en)).
 
 ## Behaviors
 ### displayMessage(h1_text, h2_text)
