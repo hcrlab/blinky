@@ -37,7 +37,7 @@ var AUTOPREFIXER_BROWSERS = [
   'bb >= 10'
 ];
 
-var DIST = '../rapid_web_interface/public/polymer';
+var DIST = 'dist';
 
 var dist = function(subpath) {
   return !subpath ? DIST : path.join(DIST, subpath);
