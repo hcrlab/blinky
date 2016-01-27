@@ -111,7 +111,9 @@ gulp.task('lint', function() {
       'app/scripts/**/*.js',
       'app/elements/**/*.js',
       'app/elements/**/*.html',
-      'gulpfile.js'
+      'gulpfile.js',
+      '!app/scripts/roslib.js',
+      '!app/scripts/eventemitter2.js',
     ])
     .pipe(reload({
       stream: true,

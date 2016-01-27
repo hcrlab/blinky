@@ -4,7 +4,6 @@
   <meta charset="utf-8">
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="generator" content="Polymer Starter Kit" />
   <title>Blinky</title>
   <!-- Place favicon.ico in the `app/` directory -->
 
@@ -46,11 +45,42 @@
   <!-- For shared styles, shared-styles.html import in elements.html -->
   <style is="custom-style" include="shared-styles"></style>
 
+  <!-- build:js scripts/app.js -->
+  <script src="scripts/app.js"></script>
+  <script src="scripts/eventemitter2.js"></script>
+  <script src="scripts/roslib.js"></script>
+  <!-- endbuild-->
+  <script>
+    function websocketUrl() {
+      var hostname = window.location.hostname;
+      var protocol = 'ws:';
+      if (window.location.protocol == 'https:') {
+        protocol = 'wss:'
+      }
+      return protocol + '//' + hostname + ':9090';
+    }
+    var websocketUrl = websocketUrl();
+    ROS = new ROSLIB.Ros({
+      url: websocketUrl
+    });
+
+    ROS.on('connection', function() {
+      console.log('Connected to websocket server.');
+    });
+
+    ROS.on('error', function(error) {
+      console.log('Error connecting to websocket server: ', error);
+    });
+
+    ROS.on('close', function() {
+      console.log('Connection to websocket server closed.');
+    });
+  </script>
 </head>
 
 <body unresolved class="fullbleed layout vertical">
-  <!--span id="browser-sync-binding"></span-->
-  <robot-face></robot-face>
+  <span id="browser-sync-binding"></span>
+  <blinky-app></blinky-app>
 </body>
 
 </html>

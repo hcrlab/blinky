@@ -1,13 +1,3 @@
-<!--
-@license
-Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
-This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
-The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
-The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
-Code distributed by Google as part of the polymer project is also
-subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
--->
-
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 
 <dom-module id="robot-face">
@@ -43,17 +33,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
     </style>
     <div id="faceContent">
-      <iron-pages attr-for-selected="data-type" selected="{{displayType}}">
-        <div data-type="default"></div> 
-        <div data-type="displayMessage">
-          <robot-message>
-            <div class="centered">
-              <div class="disp4">{{h1Text}}</div>
-              <div class="disp3">{{h2Text}}</div>
-            </div>
-          </robot-message>
-        </div> 
-      </iron-pages>
+      <content></content>
     </div>
     <div id="face" class="layout horizontal">
       <robot-eye id="leftEye" on-tap="blink"></robot-eye>
@@ -72,18 +52,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       is: 'robot-face',
 
       properties: {
-        displayType: {
-          type: String,
-          value: 'default',
-        },
-        h1Text: {
-          type: String,
-          value: '',
-        },
-        h2Text: {
-          type: String,
-          value: '',
-        },
       },
 
       ready: function() {

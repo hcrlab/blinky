@@ -1,0 +1,9 @@
+string display_type
+string h1_text
+string h2_text
+
+# Display types.
+string DEFAULT = 'default';
+string DISPLAY_MESSAGE = 'displayMessage';
+---
+---

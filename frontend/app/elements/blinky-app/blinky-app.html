@@ -1,0 +1,66 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<dom-module id="blinky-app">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <robot-face>
+      <iron-pages attr-for-selected="data-type" selected="{{displayType}}">
+        <div data-type="default"></div> 
+        <div data-type="displayMessage">
+          <robot-message>
+            <div class="centered">
+              <div class="disp4">{{h1Text}}</div>
+              <div class="disp3">{{h2Text}}</div>
+            </div>
+          </robot-message>
+        </div> 
+      </iron-pages>
+    </robot-face>
+  </template>
+    <script>
+  (function() {
+    'use strict';
+
+    Polymer({
+      is: 'blinky-app',
+      
+      ready: function() {
+        this.server = new ROSLIB.SimpleActionServer({
+          ros: ROS,
+          serverName: '/blinky',
+          actionName: 'blinky/FaceAction',
+        });
+        var that = this;
+        this.server.on('goal', function(goalMessage) {
+          that.displayType = goalMessage.display_type;
+          that.h1Text = goalMessage.h1_text;
+          that.h2Text = goalMessage.h2_text;
+          this.setSucceeded();
+        });
+        this.server.on('cancel', function() {
+          that.displayType = 'default';
+        });
+      },
+
+      properties: {
+        displayType: {
+          type: String,
+          value: 'default',
+        },
+        h1Text: {
+          type: String,
+          value: '',
+        },
+        h2Text: {
+          type: String,
+          value: '',
+        },
+      }
+    });
+  })();
+  </script>
+</dom-module>
