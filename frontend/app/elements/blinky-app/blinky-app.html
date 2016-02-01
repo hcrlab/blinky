@@ -18,6 +18,16 @@
             </div>
           </robot-message>
         </div> 
+        <div data-type="askMultipleChoice">
+          <robot-message>
+            <div class="disp3">{{question}}</div>
+          </robot-message>
+          <robot-message speaker="user" >
+            <template is="dom-repeat" items="{{choices}}">
+              <paper-button raised class$="{{isOnlyChoice}}">{{item}}</paper-button>
+            </template>
+          </robot-message>
+        </div>
       </iron-pages>
     </robot-face>
   </template>
@@ -39,6 +49,8 @@
           that.displayType = goalMessage.display_type;
           that.h1Text = goalMessage.h1_text;
           that.h2Text = goalMessage.h2_text;
+          that.question = goalMessage.question;
+          that.choices = goalMessage.choices;
           this.setSucceeded();
         });
         this.server.on('cancel', function() {
@@ -59,7 +71,25 @@
           type: String,
           value: '',
         },
-      }
+        question: {
+          type: String,
+        },
+        choices: {
+          type: Array,
+        },
+        isOnlyChoice: {
+          type: Boolean,
+          computed: '_computeIsOnlyChoice(choices)',
+        },
+      },
+
+      _computeIsOnlyChoice: function(choices) {
+        if (choices && choices.length === 1) {
+          return 'onlyChoice';
+        } else {
+          return '';
+        }
+      },
     });
   })();
   </script>
