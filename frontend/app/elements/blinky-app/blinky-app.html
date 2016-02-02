@@ -39,7 +39,7 @@
           </robot-message>
           <robot-message speaker="user" >
             <template is="dom-repeat" items="{{choices}}">
-              <paper-button raised class$="{{isOnlyChoice}}">{{item}}</paper-button>
+              <paper-button raised class$="{{isOnlyChoice}}" data-choice="{{item}}" on-tap="_onChoice">{{item}}</paper-button>
             </template>
           </robot-message>
         </div>
@@ -66,10 +66,14 @@
           that.h2Text = goalMessage.h2_text;
           that.question = goalMessage.question;
           that.choices = goalMessage.choices;
-          this.setSucceeded();
+          if (that.displayType === 'displayMessage'
+              || that.displayType === 'default') {
+            this.setSucceeded();
+          }
         });
         this.server.on('cancel', function() {
           that.displayType = 'default';
+          this.setPreempted();
         });
       },
 
@@ -119,6 +123,13 @@
           tooltip.isShowing = true;
           tooltip.show();
         }
+      },
+
+      _onChoice: function(evt) {
+        var result = new ROSLIB.Message({
+          choice: evt.target.innerText
+        });
+        this.server.setSucceeded(result);
       }
     });
   })();
