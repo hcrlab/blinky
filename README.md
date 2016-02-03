@@ -119,4 +119,10 @@ Go to port forwarding and forward port 8080 to `localhost:8080` and port 9090 to
 This will make the robot display a message to communicate to users.
 The robot can display big text (for legibility at a distance), or just regular text (to fit more content on screen), or a combination of both.
 
+### askMultipleChoice(question, choices)
+This will make the robot ask a question on screen.
+`choices` is a list of strings, each of which will be displayed as a button.
+The choice the user selects will be returned as the actionlib result.
+If there is only one choice, the button will be colored, otherwise they are grey.
+
 More behaviors coming soon!
