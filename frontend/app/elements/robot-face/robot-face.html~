@@ -53,6 +53,7 @@
 /* when active (clicked), paper-buttons are blue. */
       paper-button[active] {
 	background-color: blue;
+	font-color: 
       }
 
       #faceContent > ::content robot-message + robot-message {
@@ -104,11 +105,6 @@
         setTimeout(function() { that.blink(); that.blinkRandomly(); }, nextBlink);
       },
 
-      blink: function() {
-        this.$.leftEye.blink();
-        this.$.rightEye.blink();
-      },
-
       handleMenuSelection: function(){
 	this.$.ironpages.select(this.$.ironpagesmenu.selected);
       },
@@ -128,13 +124,17 @@
 	}
       },
 
+      blink: function() {
+		this.$.leftEye.blink();
+        	this.$.rightEye.blink();
+      }
+
       editEye: function() {
 	if(this.$.drawerButton.active){
 		this.$.drawer.openDrawer();
 		//this.$.ironpages.select(1);
 	} else{
-		this.$.leftEye.blink();
-        	this.$.rightEye.blink();
+		this.blink();
 	}
       }
 

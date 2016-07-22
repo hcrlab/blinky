@@ -124,13 +124,17 @@
 	}
       },
 
+      blink: function() {
+		this.$.leftEye.blink();
+        	this.$.rightEye.blink();
+      },
+
       editEye: function() {
 	if(this.$.drawerButton.active){
 		this.$.drawer.openDrawer();
 		//this.$.ironpages.select(1);
 	} else{
-		this.$.leftEye.blink();
-        	this.$.rightEye.blink();
+		this.blink();
 	}
       }
 
