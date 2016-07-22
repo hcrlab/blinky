@@ -53,7 +53,6 @@
 /* when active (clicked), paper-buttons are blue. */
       paper-button[active] {
 	background-color: blue;
-	font-color: 
       }
 
       #faceContent > ::content robot-message + robot-message {
@@ -103,6 +102,11 @@
         var nextBlink = Math.random() * 3000 + 2500;
         var that = this;
         setTimeout(function() { that.blink(); that.blinkRandomly(); }, nextBlink);
+      },
+
+      blink: function() {
+        this.$.leftEye.blink();
+        this.$.rightEye.blink();
       },
 
       handleMenuSelection: function(){
