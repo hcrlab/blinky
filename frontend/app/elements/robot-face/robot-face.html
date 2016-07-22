@@ -1,4 +1,5 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
+<!-- I think I don't need to import all these Polymer elements but I did anyway. -->
 <link rel="import" href="../bower_components/paper-slider/paper-slider.html">
  <link rel="import" href="../bower_components/paper-drawer-panel/paper-drawer-panel.html">
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
@@ -21,11 +22,12 @@
         width: 90%;
         margin: auto;
         height: 120px;
-        /* position: fixed; */
+        /* from Justin's original code ... position: fixed; */
 	position: absolute;
         bottom: 0;
         left: 5%;
       }
+
       robot-eye {
         width: 100px;
       }
@@ -63,14 +65,14 @@
 <!-- adding paper-drawer-panel as a menu, will put slider in it. force-narrow attribute makes the panel always in narrow layout, so the panel can be dragged over the main panel.-->
     <paper-drawer-panel id="panel" force-narrow="true" on-iron-deselect="exitEdit">
 	<div id="editDrawer" drawer> EDIT
-		<robot-menu> </robot-menu>
+		<robot-menu id="edit-menu"> </robot-menu>
 	</div>
-	<div main> 
+	<div main> <!-- this button toggles editing mode.-->
 		<paper-button id="drawerButton" toggles on-tap="toggleMode">Edit</paper-button>
-<!--the paper-drawer-toggle attribute makes that element toggle the drawer when clicked, but also hides the element in wide layout. noink removes ripple animation.  removed all those attributes though.  now this button toggles editing mode.-->
 		<div id="faceContent">
       			<content></content>
     		</div>
+		<!-- the face layout. -->
     		<div id="face" class="layout horizontal">
       			<robot-eye id="leftEye" on-tap="editEye"></robot-eye>
       			<div class="flex"></div>
@@ -94,28 +96,26 @@
       },
 
       ready: function() {
-	this.$.panel.disableSwipe = true;
+	this.$.panel.disableSwipe = true; 
+	// start off not in edit mode (can't drag open menu).  and start blinking.
 	this.$.panel.disableEdgeSwipe = true;
         this.blinkRandomly();
       },
 
-      blinkRandomly: function() {
+      blinkRandomly: function() {  // called in ready(), blinks at random intervals
         var nextBlink = Math.random() * 3000 + 2500;
         var that = this;
         setTimeout(function() { that.blink(); that.blinkRandomly(); }, nextBlink);
       },
 
-      handleMenuSelection: function(){
-	this.$.ironpages.select(this.$.ironpagesmenu.selected);
-      },
-
-      exitEdit: function(){
+      exitEdit: function(){ 
+	// sets menu non-openable when drawer is "deselected" (not 100% sure what that means)
 	this.$.panel.disableEdgeSwipe = true;
 	this.$.panel.disableSwipe = true;
 	this.$.drawerButton.active = false;
       },
 
-      toggleMode: function() {
+      toggleMode: function() { // sets the menu openable when toggle button is pressed.
 	var panel = this.$.panel;
 	if(this.$.drawerButton.active){
 		
@@ -129,10 +129,10 @@
         	this.$.rightEye.blink();
       },
 
-      editEye: function() {
+      editEye: function() {  
+	//open menu when eye clicked in edit mode, blink when clicked in non-edit mode.
 	if(this.$.drawerButton.active){
-		this.$.drawer.openDrawer();
-		//this.$.ironpages.select(1);
+		this.$.panel.openDrawer();
 	} else{
 		this.blink();
 	}

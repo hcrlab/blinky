@@ -9,6 +9,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 -->
 
 <link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/paper-slider/paper-slider.html">
 
 <dom-module id="robot-menu">
   <template>
@@ -27,14 +28,14 @@ paper-slider {
 	width: 100%;
 	height: 60%;
 	position: absolute;
-	font-size: 0.5em;
+	font-size: 1em;
       }
 
       #ironpagesmenu{
 	height: 30%;
 	width:100%
 	position: absolute;
-	font-size: 0.5em;
+	font-size: 1em;
       }
 
       #editDrawer{
@@ -56,7 +57,7 @@ paper-slider {
 				MOUTH!
 			</div>
 			<div>
-		<!-- paper-slider which will eventually control screen color -->
+		<!-- paper-slider which will eventually control screen color. TODO doesn't show up! -->
 				<div>Face Color</div>
     				<paper-slider id="faceColorSlider" on-change="changeFaceColor"></paper-slider>
 			</div>
@@ -75,7 +76,20 @@ paper-slider {
           value: 'robot-menu',
           notify: true
         }
+      },
+
+      setPage: function(page){
+	this.$.ironpages.select(page);
+      },
+
+      handleMenuSelection: function(){ // set the iron-pages to the page selected on the menu.
+	this.$.ironpages.select(this.$.ironpagesmenu.selected);
+      },
+
+      changeFaceColor: function(){
+	//TODO this doesnt change color, need to publish?
       }
+
     });
   })();
   </script>
