@@ -1,4 +1,10 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/paper-slider/paper-slider.html">
+ <link rel="import" href="../bower_components/paper-drawer-panel/paper-drawer-panel.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../bower_components/paper-menu/paper-menu.html">
+<link rel="import" href="../bower_components/iron-pages/iron-pages.html">
 
 <dom-module id="robot-face">
   <template>
@@ -7,15 +13,16 @@
         display: block;
         width: 100%;
         height: 100%;
-        background-color: #512DA8;
+        background-color: #512DA8; /*#512DA8*/
         position: fixed;
         font-family: 'Roboto', sans-serif;
       }
       #face {
         width: 90%;
-        margin: 0px auto;
+        margin: auto;
         height: 120px;
-        position: fixed;
+        /* position: fixed; */
+	position: absolute;
         bottom: 0;
         left: 5%;
       }
@@ -28,33 +35,112 @@
         overflow: auto;
       }
 
+      paper-slider {
+	min: 0;
+	max: 100;
+	value: 50;
+      }
+
+      iron-pages{
+	background-color: #e0ebeb;
+	width: 100%;
+	height: 60%;
+	position: absolute;
+	font-size: 0.5em;
+      }
+
+      #ironpagesmenu{
+	height: 30%;
+	width:100%
+	position: absolute;
+	font-size: 0.5em;
+      }
+
+
+ 
+/*This button toggles the drawer-panel.  right:0px aligns the button right; position:absolute keeps it relative to the main panel (I think.)*/
+      #drawerButton {
+	color: #000;
+	width: 50px;
+	height: 20px;
+	position: absolute;
+	right: 0px;
+      }
+
+/* normally, paper-buttons are purple. */
+      paper-button {
+	background-color: #512DA8;
+      }
+
+/* when active (clicked), paper-buttons are blue. */
+      paper-button[active] {
+	background-color: blue;
+      }
+
+      #editDrawer{
+	font-size: 1.6em;
+      }
+
       #faceContent > ::content robot-message + robot-message {
         margin-top: 30px;
       }
     </style>
-    <div id="faceContent">
-      <content></content>
-    </div>
-    <div id="face" class="layout horizontal">
-      <robot-eye id="leftEye" on-tap="blink"></robot-eye>
-      <div class="flex"></div>
-      <robot-mouth></robot-mouth>
-      <div class="flex"></div>
-      <robot-eye id="rightEye" on-tap="blink"></robot-eye>
-    </div>
-    </div>
+<!-- adding paper-drawer-panel as a menu, will put slider in it. force-narrow attribute makes the panel always in narrow layout, so the panel can be dragged over the main panel.-->
+    <paper-drawer-panel id="panel" force-narrow="true" on-iron-deselect="exitEdit">
+	<div id="editDrawer" drawer> EDIT 
+		<!-- menu to select iron-pages -->
+		<paper-menu id="ironpagesmenu" on-iron-select="handleMenuSelection">
+			<paper-item value="eyes">Eyes</paper-item>
+			<paper-item value="mouth">Mouth</paper-item>
+			<paper-item value="back">Background</paper-item>
+		</paper-menu>
+		<!-- the pages in the drawer panel editor. -->
+    		<iron-pages id="ironpages"> 
+			<div>
+				EYES!
+			</div>
+			<div>
+				MOUTH!
+			</div>
+			<div>
+		<!-- paper-slider which will eventually control screen color -->
+				<div>Face Color</div>
+    				<paper-slider id="faceColorSlider" on-change="changeFaceColor"></paper-slider>
+			</div>
+    		</iron-pages>
+		
+	</div>
+	<div main> 
+		<paper-button id="drawerButton" toggles on-tap="toggleMode">Edit</paper-button>
+<!--the paper-drawer-toggle attribute makes that element toggle the drawer when clicked, but also hides the element in wide layout. noink removes ripple animation.  removed all those attributes though.  now this button toggles editing mode.-->
+		<div id="faceContent">
+      			<content></content>
+    		</div>
+    		<div id="face" class="layout horizontal">
+      			<robot-eye id="leftEye" on-tap="editEye"></robot-eye>
+      			<div class="flex"></div>
+      			<robot-mouth></robot-mouth>
+      			<div class="flex"></div>
+      			<robot-eye id="rightEye" on-tap="editEye"></robot-eye>
+    		</div>
+    	</div>
+	</div>
+    </paper-drawer-panel>
+    
   </template>
   <script>
   (function() {
     'use strict';
-
     Polymer({
       is: 'robot-face',
 
       properties: {
+
       },
 
       ready: function() {
+	this.$.panel.disableSwipe = true;
+	this.$.panel.disableEdgeSwipe = true;
         this.blinkRandomly();
       },
 
@@ -67,7 +153,35 @@
       blink: function() {
         this.$.leftEye.blink();
         this.$.rightEye.blink();
+      },
+
+      handleMenuSelection: function(){
+	this.$.ironpages.select(this.$.ironpagesmenu.selected);
+      },
+
+      exitEdit: function(){
+	this.$.panel.disableEdgeSwipe = true;
+	this.$.panel.disableSwipe = true;
+	this.$.drawerButton.active = false;
+      },
+
+      toggleMode: function() {
+	var panel = this.$.panel;
+	if(this.$.drawerButton.active){
+		
+		panel.disableSwipe = false;
+		panel.disableEdgeSwipe = false;
+	}
+      },
+
+      editEye: function() {
+	if(this.$.drawerButton.active){
+		this.$.drawer.openDrawer();
+		this.$.ironpages.select(1);
+	} else blink();
       }
+
+
     });
   })();
   </script>
