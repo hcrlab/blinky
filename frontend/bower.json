@@ -9,7 +9,8 @@
     "platinum-elements": "PolymerElements/platinum-elements#^1.1.0",
     "polymer": "Polymer/polymer#^1.2.0",
     "paper-menu": "PolymerElements/paper-menu#4fecb43601",
-    "paper-slider": "PolymerElements/paper-slider#^1.0.11"
+    "paper-slider": "PolymerElements/paper-slider#^1.0.11",
+    "paper-input": "PolymerElements/paper-input#^1.1.15"
   },
   "devDependencies": {
     "web-component-tester": "*"

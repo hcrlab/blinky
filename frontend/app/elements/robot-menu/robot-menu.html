@@ -17,78 +17,88 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       :host {
         display: block;
       }
-paper-slider {
+
+      paper-slider {
 	min: 0;
 	max: 100;
 	value: 50;
       }
 
-      iron-pages{
+      iron-pages{ /*TODO the issue with being % height is that it needs a minimum height...*/
 	background-color: #e0ebeb;
 	width: 100%;
-	height: 60%;
+	height: 90%;
 	position: absolute;
 	font-size: 1em;
-      }
-
-      #ironpagesmenu{
-	height: 30%;
-	width:100%
-	position: absolute;
-	font-size: 1em;
+	margin: auto;
+	bottom: 0px;
       }
 
       #editDrawer{
 	font-size: 1.6em;
       }
+
+      #faceEditor{
+	height: 10%;
+	top: 0px;
+	margin: auto;
+	position: absolute;
+      }
+
     </style>
-<!-- menu to select iron-pages -->
-		<paper-menu id="ironpagesmenu" on-iron-select="handleMenuSelection">
-			<paper-item value="eyes">Eyes</paper-item>
-			<paper-item value="mouth">Mouth</paper-item>
-			<paper-item value="back">Background</paper-item>
-		</paper-menu>
-		<!-- the pages in the drawer panel editor. -->
-    		<iron-pages id="ironpages"> 
-			<div>
-				EYES!
-			</div>
-			<div>
-				MOUTH!
-			</div>
-			<div>
-		<!-- paper-slider which will eventually control screen color. TODO doesn't show up! -->
-				<div>Face Color</div>
-    				<paper-slider id="faceColorSlider" on-change="changeFaceColor"></paper-slider>
-			</div>
-    		</iron-pages>
+	<!-- the face color that is always there. -->
+	<div id="faceEditor">
+		<paper-input label="face color" on-change="changeFaceColor"><paper-input>
+	</div>
+	<!-- the pages in the drawer panel editor. -->
+    	<iron-pages id="ironpages"> 
+		<div>EYES!
+			<paper-input id="irisColorInput" on-change="changeEyeColor">iris color</paper-input>
+		</div>
+		<div>MOUTH!
+		</div>
+		<div>NOSE!
+		</div>
+		<div>EYEBROWS!
+		</div>
+    	</iron-pages>
   </template>
   <script>
   (function() {
     'use strict';
 
+		/*var goal;
+		var message;*/
+		var face;
+
     Polymer({
       is: 'robot-menu',
 
       properties: {
-        foo: {
+        foo: { //not actually anything.
           type: String,
           value: 'robot-menu',
           notify: true
         }
       },
 
-      setPage: function(page){
-	this.$.ironpages.select(page);
+      setPage: function(page){ //from outside this file, set the menu page.
+				this.$.ironpages.select(page);
       },
 
-      handleMenuSelection: function(){ // set the iron-pages to the page selected on the menu.
-	this.$.ironpages.select(this.$.ironpagesmenu.selected);
+      changeEyeColor: function(){
+				face.editEye(this.$.irisColorInput.value);
       },
 
       changeFaceColor: function(){
-	//TODO this doesnt change color, need to publish?
-      }
+	//TODO this doesnt change color yet
+      },
+
+			//when robot-face loads, it calls this function 
+			//and passes itself in so robot-menu can access robot-face
+			getFace: function(faceVar){
+				face = faceVar;
+			}
 
     });
   })();
