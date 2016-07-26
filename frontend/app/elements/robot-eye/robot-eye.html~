@@ -35,10 +35,6 @@
     Polymer({
       is: 'robot-eye',
 
-			properties: {
-				
-			},
-
       blink: function() {
         var eyelid = this.$.eyelid;
         eyelid.animate([{'height': '0px'}, {'height': '110px'}], 100, 'swing', function() {
@@ -46,8 +42,9 @@
         });
       },
 
+			//robot-face calls this to edit the eye by setting attributes.
 			edit: function(params){
-				this.$.iris.setAttribute('fill', params);
+				//this.$.iris.setAttribute('fill', params);
 			}
     });
   })();

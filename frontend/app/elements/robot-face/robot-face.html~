@@ -21,26 +21,26 @@
       #face {
         width: 100%;
         margin: auto;
-	height: 90%; /* height is 90% so it doesn't cover button, this isn't ideal*/
+				height: 90%; /* height is 90% so it doesn't cover button, this isn't ideal*/
         /* original ... height: 120px;*/
         /* original ... position: fixed; */
-	position: absolute;
+				position: absolute;
         bottom: 0;
       }
 
       robot-eye {
         width: 100px;
-	position: absolute;
-	bottom: 15px;
-	margin: auto;
+				position: absolute;
+				bottom: 15px;
+				margin: auto;
       }
 
       #rightEye {
-	right: 15px;
+				right: 15px;
       }
 
       #leftEye {
-	left: 15px;
+				left: 15px;
       }
 
       #faceContent {
@@ -53,22 +53,22 @@
 position:absolute keeps it relative to the main panel (I think.)
 TODO: Is there a way to put the button on top of the face so the face can be 100% height?*/
       #drawerButton {
-	color: #000;
-	width: 50px;
-	height: 20px;
-	position: absolute;
-	right: 0px;
+				color: #000;
+				width: 50px;
+				height: 20px;
+				position: absolute;
+				right: 0px;
       }
 
 /* normally, paper-buttons are purple. */
       paper-button {
-	background-color: #512DA8;
+				background-color: #512DA8;
       }
 
 /* when active (clicked), paper-buttons are blue. */
       paper-button[active] {
-	background-color: blue;
-	font-color: 
+				background-color: blue;
+				font-color: 
       }
 
       #faceContent > ::content robot-message + robot-message {
