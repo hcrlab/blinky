@@ -5,14 +5,15 @@
     <style>
       :host {
         display: block;
-        height: 100px;
-        width: 100px;
+        height: 100%;
+        width: 100%;
         overflow: hidden;
+				border-radius: 50%;
       }
       #eyelid {
         position: absolute;
         background-color: #512Da8;
-        width: 100px;
+        width: 100%;
         height: 0px;
       }
 			#iris {
@@ -21,10 +22,10 @@
     </style>
     <div id="eye">
       <div id="eyelid"></div>
-      <svg width="100" height="100">
-        <circle cx="50" cy="50" r="50" fill="#fff" />
-				<circle id="iris" cx="50" cy="50" r="35"/> <!--#009933-->
-        <circle cx="50" cy="50" r="28" fill="#000" />
+      <svg width="100%" height="100%">
+        <ellipse 						cx="50%" cy="50%" rx="100%" ry="100%" 	fill="#fff" />
+				<ellipse id="iris" 	cx="50%" cy="50%" rx="40%" 	ry = "40%" 	fill$="{{eyeColor}}"/> <!--#009933-->
+        <ellipse 						cx="50%" cy="50%" rx="30%" 	ry="30%" 		fill="#000" />
       </svg>
     </div>
   </template>
@@ -35,16 +36,23 @@
     Polymer({
       is: 'robot-eye',
 
+			properties: {
+				eyeColor: { value: '#009933' }
+			},
+
       blink: function() {
         var eyelid = this.$.eyelid;
-        eyelid.animate([{'height': '0px'}, {'height': '110px'}], 100, 'swing', function() {
-          eyelid.animate([{'height': '100px'}, {'height': '0px'}], 100);
+        eyelid.animate([{'height': '0px'}, {'height': '110%'}], 100, 'swing', function() {
+          eyelid.animate([{'height': '100%'}, {'height': '0px'}], 100);
         });
       },
 
 			//robot-face calls this to edit the eye by setting attributes.
 			edit: function(params){
-				this.$.iris.setAttribute('fill', params);
+				// TODO is there a better way to handle multipletypes of edit, maybe with a loop?
+				if( params !== null ){
+					this.$.iris.style.fill = params;
+				}
 			}
     });
   })();

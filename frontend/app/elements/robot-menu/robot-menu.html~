@@ -53,7 +53,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 	<!-- the pages in the drawer panel editor. -->
     	<iron-pages id="ironpages"> 
 		<div>EYES!
-			<paper-input id="irisColorInput" on-change="changeEyeColor">iris color</paper-input>
+			<paper-input id="irisColorInput" label="iris color" value="{{eyeColor}}"></paper-input>
+			<paper-input id="eyeYInput" label="eye y position" value="{{eyeY}}"></paper-input>
+			<paper-input id="eyeHInput" label="eye height" on-change="changeEyeH"></paper-input>
+			<paper-input id="eyeWInput" label="eye width" on-change="changeEyeW"></paper-input>
 		</div>
 		<div>MOUTH!
 		</div>
@@ -67,32 +70,31 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   (function() {
     'use strict';
 
-		/*var goal;
-		var message;*/
 		var face;
 
     Polymer({
       is: 'robot-menu',
 
       properties: {
-        foo: { //not actually anything.
-          type: String,
-          value: 'robot-menu',
-          notify: true
-        }
+				eyeColor: { value: '#009933', notify: true },
+				eyeY: { value: '15px', notify: true }
       },
 
       setPage: function(page){ //from outside this file, set the menu page.
 				this.$.ironpages.select(page);
       },
 
-      changeEyeColor: function(){
-				face.editEye(this.$.irisColorInput.value);
-      },
+			/*changeEyeH: function() {
+				face.moveEye(null,this.$.eyeHInput.value,null);
+			},
+
+			changeEyeW: function() {
+				face.moveEye(null,null,this.$.eyeWInput.value);
+			},
 
       changeFaceColor: function(){
 	//TODO this doesnt change color yet
-      },
+      },/
 
 			//when robot-face loads, it calls this function 
 			//and passes itself in so robot-menu can access robot-face

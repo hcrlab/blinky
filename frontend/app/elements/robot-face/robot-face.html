@@ -1,11 +1,6 @@
+<!-- TODO the eye and the mouth menus close editing mode when deslected, but eyebrow doesn't ... ??? -->
+
 <link rel="import" href="../../bower_components/polymer/polymer.html">
-<!-- I think I don't need to import all these Polymer elements but I did anyway. -->
-<link rel="import" href="../bower_components/paper-slider/paper-slider.html">
- <link rel="import" href="../bower_components/paper-drawer-panel/paper-drawer-panel.html">
-<link rel="import" href="../bower_components/paper-button/paper-button.html">
-<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
-<link rel="import" href="../bower_components/paper-menu/paper-menu.html">
-<link rel="import" href="../bower_components/iron-pages/iron-pages.html">
 
 <dom-module id="robot-face">
   <template>
@@ -27,12 +22,30 @@
 				position: absolute;
         bottom: 0;
       }
+		
+			robot-eyebrow{
+				height: 50px;
+				width: 150px;
+				margin: auto;
+				top: 200px;
+				position: relative;
+			}
+
+			#leftEyebrow{
+				left:15px;
+			}
+
+			#rightEyebrow{
+				right: 15px;
+			}
 
       robot-eye {
-        width: 100px;
+				/*anything other than 150px h and w gets all messed up.*/
+				height: 150px;
+				width: 150px;
 				position: absolute;
-				bottom: 15px;
 				margin: auto;
+				bottom: var(eyeY);
       }
 
       #rightEye {
@@ -43,14 +56,18 @@
 				left: 15px;
       }
 
+			robot-mouth{
+				position: absolute;
+				bottom: 0;
+			}
+
       #faceContent {
-        max-height: 390px;
+        /*max-height: 390px;*/
         overflow: auto;
       }
 
  
-/*This button toggles the drawer-panel.  right:0px aligns the button right; 
-position:absolute keeps it relative to the main panel (I think.)
+/*This button toggles edit mode.
 TODO: Is there a way to put the button on top of the face so the face can be 100% height?*/
       #drawerButton {
 				color: #000;
@@ -68,7 +85,6 @@ TODO: Is there a way to put the button on top of the face so the face can be 100
 /* when active (clicked), paper-buttons are blue. */
       paper-button[active] {
 				background-color: blue;
-				font-color: 
       }
 
       #faceContent > ::content robot-message + robot-message {
@@ -78,7 +94,7 @@ TODO: Is there a way to put the button on top of the face so the face can be 100
 <!-- adding paper-drawer-panel as a menu, will put slider in it. force-narrow attribute makes the panel always in narrow layout, so the panel can be dragged over the main panel.-->
     <paper-drawer-panel id="panel" force-narrow="true" >
 	<div id="editDrawer" drawer on-iron-deselect="exitEdit">
-		<robot-menu id="editMenu"> </robot-menu>
+		<robot-menu id="editMenu" eye-color="{{eyeColor}}" eye-y="{{eyeY}}"> </robot-menu>
 	</div>
 	<div main> 
 		<!-- this button toggles editing mode.-->
@@ -88,11 +104,19 @@ TODO: Is there a way to put the button on top of the face so the face can be 100
     		</div>
 		<!-- the face layout. removed editFace, put color selector always in editor-->
     		<div id="face" class="layout horizontal">
-      			<robot-eye id="leftEye" on-tap="openEyeMenu"></robot-eye>
+						<!-- TODO the eyebrows aren't positioned relative to the eye. -->
+						<div>
+							<robot-eyebrow id="leftEyebrow" on-tap="openEyebrowMenu"></robot-eyebrow>
+      				<robot-eye id="leftEye" on-tap="openEyeMenu" eye-color="{{eyeColor}}"></robot-eye>
+						</div>
       			<div class="flex"></div>
+						<!--TODO mouth isn't in between flexboxes, might not be centered?-->
       			<robot-mouth id="mouth" on-tap="openMouthMenu"></robot-mouth>
       			<div class="flex"></div>
-      			<robot-eye id="rightEye" on-tap="openEyeMenu"></robot-eye>
+						<div position="absolute" bottom="0px">
+							<robot-eyebrow id="rightEyebrow" on-tap="openEyebrowMenu"></robot-eyebrow>
+      				<robot-eye id="rightEye" on-tap="openEyeMenu" eye-color="{{eyeColor}}"></robot-eye>
+						</div>
     		</div>
     	</div>
 	</div>
@@ -102,15 +126,19 @@ TODO: Is there a way to put the button on top of the face so the face can be 100
   <script>
   (function() {
     'use strict';
+
+
     Polymer({
       is: 'robot-face',
 
       properties: {
-
+				eyeColor: '#009933',
+				eyeY: {value:'15px'}
       },
 
 			ready: function() {
 				this.$.editMenu.getFace(this);
+				this.$.panel.disableSwipe = true;
 				this.blinkRandomly();
 			},
 
@@ -123,11 +151,9 @@ TODO: Is there a way to put the button on top of the face so the face can be 100
       toggleMode: function() { // sets the menu openable when toggle button is pressed, and vv.
 				var panel = this.$.panel;
 				if(this.$.drawerButton.active){
-					panel.disableSwipe = false;
 					panel.disableEdgeSwipe = false;
 				}else {
 					this.$.panel.disableEdgeSwipe = true;
-					this.$.panel.disableSwipe = true;
         }
       },
 
@@ -150,32 +176,44 @@ TODO: Is there a way to put the button on top of the face so the face can be 100
 				}
       },
 
+			openEyebrowMenu: function(){
+				if(this.$.drawerButton.active){
+					this.$.panel.openDrawer();
+					this.$.editMenu.setPage(3);
+				}
+			},
+
       openMouthMenu: function() {
 				//open mouth page in menu when mouth tapped in edit mode
-				// TODO unibrow area also registers as mouth (????)
 				if(this.$.drawerButton.active){
 					this.$.panel.openDrawer();
 					this.$.editMenu.setPage(1);
 				}
       },
 
+			// handles edits that need to happen in robot-eye, eg color.
 			editEye: function(params){
 				this.$.rightEye.edit(params);
 				this.$.leftEye.edit(params);
 			},
 
+			// handles edits that need to happen in robot-mouth, eg color.
 			editMouth: function(params){
 				this.$.mouth.edit(params);
-			}
+			},
 
-	/*
-	* open face page in menu when face (not eye or mouth) clicked in edit mode
-	* features also open 2.  maybe being changed to 2, 
-	* editFace called just after editEye bc editMode isnt turned off immed. anymore?
-	* not bc eye part of face.
-	* but when iron-deselect is in drawer div, it doesnt tap eye even though
-	* it does deselect button right away.
-	*/
+			// handles edits to eye position and size.
+			moveEye: function(height, width){
+				if(height !== null){
+					this.$.leftEye.style.height = height;
+					this.$.rightEye.style.height = height;					
+				}
+				if(width !== null){
+					this.$.leftEye.style.width = width;
+					this.$.rightEye.style.width = width;
+				}
+
+			}
 
     });
   })();
