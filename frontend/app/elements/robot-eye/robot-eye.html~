@@ -9,11 +9,9 @@
         width: 100%;
         overflow: hidden;
 				border-radius: 50%;
-				bottom: 15px;
       }
       #eyelid {
         position: absolute;
-        background-color: #512Da8;
         width: 100%;
         height: 0px;
       }
@@ -22,10 +20,10 @@
 			}
     </style>
     <div id="eye">
-      <div id="eyelid"></div>
+      <div id="eyelid" style="background-color: {{config.faceColor}}"></div>
       <svg width="100%" height="100%">
         <ellipse 						cx="50%" cy="50%" rx="100%" ry="100%" 	fill="#fff" />
-				<ellipse id="iris" 	cx="50%" cy="50%" rx="40%" 	ry = "40%" 	fill$="{{eyeColor}}"/> <!--#009933-->
+				<ellipse id="iris" 	cx="50%" cy="50%" rx="40%" 	ry = "40%" 	fill$="{{config.eyeColor}}"/> <!--#009933-->
         <ellipse 						cx="50%" cy="50%" rx="30%" 	ry="30%" 		fill="#000" />
       </svg>
     </div>
@@ -38,8 +36,15 @@
       is: 'robot-eye',
 
 			properties: {
-				eyeColor: { value: '#009933' }
-			},
+				config: {
+					eyeColor: '#009933',
+					menuPage: 0,
+					faceColor: {value:'#512DA8', notify: true}
+				},
+				eyeH: '150px',
+				eyeW: '150px',
+				eyeY: {value:'15px'}
+      },
 
       blink: function() {
         var eyelid = this.$.eyelid;

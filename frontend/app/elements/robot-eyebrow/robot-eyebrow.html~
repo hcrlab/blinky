@@ -6,12 +6,11 @@
       :host {
         height: 50px;
         width: 150px;
-        overflow: hidden;
       }
     </style>
       <svg width="150px" height="50px">
         <ellipse cx="70" cy="60" rx="70px" ry="40px" fill="black" />
-				<ellipse cx="70" cy="60"  rx="70px" ry="30px" fill="#512DA8" />
+				<ellipse cx="70" cy="60"  rx="70px" ry="30px" fill$="{{config.faceColor}}" />
       </svg>
   </template>
   <script>
@@ -19,7 +18,20 @@
     'use strict';
 
     Polymer({
-      is: 'robot-eyebrow'
+      is: 'robot-eyebrow',
+
+properties: {
+				config: {
+					type: Object,
+					eyeColor: '#009933',
+					menuPage: 0,
+					faceColor: {value:'#512DA8', notify: true}
+				},
+				//these are separate from config so they are easier to set in style attribute.
+				eyeH: '150px',
+				eyeW: '150px',
+				eyeY: {value:'15px'}
+      },
 
     });
   })();

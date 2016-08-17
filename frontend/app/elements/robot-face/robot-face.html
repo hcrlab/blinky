@@ -1,4 +1,6 @@
 <!-- TODO the eye and the mouth menus close editing mode when deslected, but eyebrow doesn't ... ??? -->
+<!-- the edit button gets deselcted when a component is clicked for the first time in edit mode, but if you close the menu -->
+<!-- and select the edit button again and click that same component it does not deselct that time. -->
 
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 
@@ -9,7 +11,6 @@
         display: block;
         width: 100%;
         height: 100%;
-        background-color: #512DA8; /*#512DA8*/
         position: fixed;
         font-family: 'Roboto', sans-serif;
       }
@@ -40,12 +41,12 @@
 			}
 
       robot-eye {
-				/*anything other than 150px h and w gets all messed up.*/
-				height: 150px;
-				width: 150px;
+				/*TODO anything other than 150px h gets all messed up bc height of eye is always full height of page or something?.*/
 				position: absolute;
 				margin: auto;
-				bottom: var(eyeY);
+				height: 150px;
+				width: 150px;
+				bottom: 0px;
       }
 
       #rightEye {
@@ -77,11 +78,6 @@ TODO: Is there a way to put the button on top of the face so the face can be 100
 				right: 0px;
       }
 
-/* normally, paper-buttons are purple. */
-      paper-button {
-				background-color: #512DA8;
-      }
-
 /* when active (clicked), paper-buttons are blue. */
       paper-button[active] {
 				background-color: blue;
@@ -94,28 +90,28 @@ TODO: Is there a way to put the button on top of the face so the face can be 100
 <!-- adding paper-drawer-panel as a menu, will put slider in it. force-narrow attribute makes the panel always in narrow layout, so the panel can be dragged over the main panel.-->
     <paper-drawer-panel id="panel" force-narrow="true" >
 	<div id="editDrawer" drawer on-iron-deselect="exitEdit">
-		<robot-menu id="editMenu" eye-color="{{eyeColor}}" eye-y="{{eyeY}}"> </robot-menu>
+		<robot-menu id="editMenu" config="{{config}}" eye-y="{{eyeY}}" eye-h="{{eyeH}}" eye-w="{{eyeW}}"> </robot-menu>
 	</div>
 	<div main> 
 		<!-- this button toggles editing mode.-->
-		<paper-button id="drawerButton" toggles on-tap="toggleMode">EDIT</paper-button>
+		<paper-button id="drawerButton" toggles on-tap="toggleMode" color$="{{config.faceColor}}">EDIT</paper-button>
 		<div id="faceContent">
       			<content></content>
     		</div>
 		<!-- the face layout. removed editFace, put color selector always in editor-->
     		<div id="face" class="layout horizontal">
 						<!-- TODO the eyebrows aren't positioned relative to the eye. -->
-						<div>
-							<robot-eyebrow id="leftEyebrow" on-tap="openEyebrowMenu"></robot-eyebrow>
-      				<robot-eye id="leftEye" on-tap="openEyeMenu" eye-color="{{eyeColor}}"></robot-eye>
+						<div height="170px">
+      				<robot-eye id="leftEye" on-tap="openEyeMenu" config="{{config}}" style$="bottom: {{eyeY}}; height:{{eyeH}}; width:{{eyeW}}"></robot-eye>
+							<robot-eyebrow id="leftEyebrow" on-tap="openEyebrowMenu" config="{{config}}"></robot-eyebrow>
 						</div>
       			<div class="flex"></div>
 						<!--TODO mouth isn't in between flexboxes, might not be centered?-->
-      			<robot-mouth id="mouth" on-tap="openMouthMenu"></robot-mouth>
+      			<robot-mouth id="mouth" on-tap="openMouthMenu" ></robot-mouth>
       			<div class="flex"></div>
-						<div position="absolute" bottom="0px">
-							<robot-eyebrow id="rightEyebrow" on-tap="openEyebrowMenu"></robot-eyebrow>
-      				<robot-eye id="rightEye" on-tap="openEyeMenu" eye-color="{{eyeColor}}"></robot-eye>
+						<div height="170px">
+      				<robot-eye id="rightEye" on-tap="openEyeMenu" config="{{config}}" style$="bottom: {{eyeY}}; height:{{eyeH}}; width:{{eyeW}}"></robot-eye>
+							<robot-eyebrow id="rightEyebrow" on-tap="openEyebrowMenu" config="{{config}}"></robot-eyebrow>
 						</div>
     		</div>
     	</div>
@@ -127,12 +123,24 @@ TODO: Is there a way to put the button on top of the face so the face can be 100
   (function() {
     'use strict';
 
-
     Polymer({
       is: 'robot-face',
 
       properties: {
-				eyeColor: '#009933',
+				config: {
+					type: Object,
+					notify: true,
+					value: function() {
+						return{
+							eyeColor: '#009933',
+							menuPage: 0,
+							faceColor: '#512DA8'
+						};
+					}
+				},
+				//these are separate from config so they are easier to set in style attribute.
+				eyeH: '150px',
+				eyeW: '150px',
 				eyeY: {value:'15px'}
       },
 

@@ -16,7 +16,7 @@
         --iron-icon-height: 56px;
       }
     </style>
-    <robot-face id="face" on-tap="editFace">
+    <robot-face face-color="{{config.faceColor}}" style="background-color:{{config.faceColor}}">
       <template is="dom-if" if="{{!isConnected}}">
         <div class="warning">
           <iron-icon icon="warning" on-tap="_showWarningTooltip"></iron-icon>
@@ -102,7 +102,24 @@
         isConnected: {
           type: Boolean,
           value: false,
-        }
+        },
+
+				config: {
+					type: Object,
+					notify: true,
+					value: function() {
+						return{
+							eyeColor: '#009933',
+							menuPage: 0,
+							faceColor: '#512DA8'
+						};
+					}
+				},
+				//these are separate from config so they are easier to set in style attribute.
+				eyeH: '150px',
+				eyeW: '150px',
+				eyeY: {value:'15px'}
+
       },
 
       _computeIsOnlyChoice: function(choices) {
@@ -129,10 +146,6 @@
           choice: evt.target.innerText
         });
         this.server.setSucceeded(result);
-      },
-
-      editFace: function(){
-	this.$.face.edit(3);
       }
     });
   })();

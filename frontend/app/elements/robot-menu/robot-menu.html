@@ -48,21 +48,21 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </style>
 	<!-- the face color that is always there. -->
 	<div id="faceEditor">
-		<paper-input label="face color" on-change="changeFaceColor"><paper-input>
+		<paper-input label="face color" value="{{config.faceColor}}" ><paper-input>
 	</div>
 	<!-- the pages in the drawer panel editor. -->
-    	<iron-pages id="ironpages"> 
-		<div>EYES!
-			<paper-input id="irisColorInput" label="iris color" value="{{eyeColor}}"></paper-input>
+    	<iron-pages id="ironpages" selected="{{config.menuPage}}"> 
+		<div>EYES
+			<paper-input id="irisColorInput" label="iris color" value="{{config.eyeColor}}"></paper-input>
 			<paper-input id="eyeYInput" label="eye y position" value="{{eyeY}}"></paper-input>
-			<paper-input id="eyeHInput" label="eye height"></paper-input>
-			<paper-input id="eyeWInput" label="eye width"></paper-input>
+			<paper-input id="eyeHInput" label="eye height" value="{{eyeH}}"></paper-input>
+			<paper-input id="eyeWInput" label="eye width" value="{{eyeW}}"></paper-input>
 		</div>
-		<div>MOUTH!
+		<div>MOUTH
 		</div>
-		<div>NOSE!
+		<div>NOSE
 		</div>
-		<div>EYEBROWS!
+		<div>EYEBROWS
 		</div>
     	</iron-pages>
   </template>
@@ -76,8 +76,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       is: 'robot-menu',
 
       properties: {
-				eyeColor: { value: '#009933', notify: true },
-				eyeY: { value: '15px', notify: true }
+				config: {
+					type: Object,
+					notify: true,
+					value: function() {
+						return{
+							eyeColor: '#009933',
+							menuPage: 0,
+							faceColor: '#512DA8'
+						};
+					}
+				},
+				eyeH: {value: '150px', notify: true},
+				eyeW: {value: '150px', notify: true},
+				eyeY: {value:'15px', notify: true}
       },
 
       setPage: function(page){ //from outside this file, set the menu page.
