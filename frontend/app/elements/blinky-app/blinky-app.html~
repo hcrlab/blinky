@@ -16,7 +16,7 @@
         --iron-icon-height: 56px;
       }
     </style>
-    <robot-face face-color="{{config.faceColor}}" style="background-color:{{config.faceColor}}">
+    <robot-face config="{{config}}" eye-y="{{eyeY}}" eye-h="{{eyeH}}" eye-w="{{eyeW}}" style$="background-color:{{config.faceColor}}">
       <template is="dom-if" if="{{!isConnected}}">
         <div class="warning">
           <iron-icon icon="warning" on-tap="_showWarningTooltip"></iron-icon>
@@ -66,6 +66,12 @@
           that.h2Text = goalMessage.h2_text;
           that.question = goalMessage.question;
           that.choices = goalMessage.choices;
+          // for strings in config, use that.set() since config is an Object. TODO I'd like to only set variables that aren't undefined.
+					that.set('config.faceColor', goalMessage.faceColor);
+					that.set('config.eyeColor', goalMessage.eyeColor);
+					that.set('eyeY', goalMessage.eyeY);
+					that.eyeH = goalMessage.eyeH;
+					that.eyeW = goalMessage.eyeW;
           if (that.displayType === 'displayMessage' || that.displayType === 'default') {
             this.setSucceeded();
           }
@@ -74,6 +80,26 @@
           that.displayType = 'default';
           this.setPreempted();
         });
+
+				/*trying to make a separate server... nothing breaks when I send a message but nothing changes either
+					this.server2 = new ROSLIB.SimpleActionServer({
+          ros: ROS,
+          serverName: '/blinky',
+          actionName: 'blinky/MenuAction',
+        });
+        var that = this;
+        this.server2.on('goal', function(goalMessage) {
+          // for strings in config, use that.set() since config is an Object. TODO I'd like to only set variables that aren't undefined.
+					that.set('config.faceColor', goalMessage.faceColor);
+					that.set('config.eyeColor', goalMessage.eyeColor);
+					that.set('eyeY', goalMessage.eyeY);
+					that.eyeH = goalMessage.eyeH;
+					that.eyeW = goalMessage.eyeW;
+          this.setSucceeded();
+        });
+        this.server2.on('cancel', function() {
+          this.setPreempted();
+        });*/
       },
 
       properties: {
@@ -116,9 +142,9 @@
 					}
 				},
 				//these are separate from config so they are easier to set in style attribute.
-				eyeH: '150px',
-				eyeW: '150px',
-				eyeY: {value:'15px'}
+				eyeH: {type: String, value: '150px', notify: true},
+				eyeW: {type: String, value: '150px', notify: true},
+				eyeY: {type: String, value: '15px', notify: true}
 
       },
 

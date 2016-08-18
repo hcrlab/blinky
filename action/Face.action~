@@ -1,0 +1,13 @@
+string display_type # See display type constants.
+string h1_text # Large, headline text.
+string h2_text # Regular-sized text.
+string question # The question to ask to the user.
+string[] choices # Choices for multiple choice question.
+
+# Display types.
+string DEFAULT = default
+string DISPLAY_MESSAGE = displayMessage
+string ASK_CHOICE = askMultipleChoice
+---
+string choice # The selected choice, if applicable.
+---

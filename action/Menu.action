@@ -1,4 +1,8 @@
-string element
+string faceColor		#background
+string eyeColor			#iris
+string eyeH					#eye size: height
+string eyeW					#eye size: width
+string eyeY					#eye placement: height above bottom of screen
 ---
 string success
 ---

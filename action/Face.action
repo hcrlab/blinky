@@ -1,13 +1,21 @@
+# Text display.
 string display_type # See display type constants.
-string h1_text # Large, headline text.
-string h2_text # Regular-sized text.
-string question # The question to ask to the user.
-string[] choices # Choices for multiple choice question.
+string h1_text 			# Large, headline text.
+string h2_text 			# Regular-sized text.
+string question 		# The question to ask to the user.
+string[] choices 		# Choices for multiple choice question.
+
+# Face customization.
+string faceColor		# Background color.
+string eyeColor			# Iris color.
+string eyeH					# Eye size: height
+string eyeW					# Eye size: width
+string eyeY					# Eye placement: height above bottom of screen
 
 # Display types.
 string DEFAULT = default
 string DISPLAY_MESSAGE = displayMessage
 string ASK_CHOICE = askMultipleChoice
 ---
-string choice # The selected choice, if applicable.
+string choice 			# The selected choice, if applicable.
 ---

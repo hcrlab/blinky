@@ -53,8 +53,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 	<!-- the pages in the drawer panel editor. -->
     	<iron-pages id="ironpages" selected="{{config.menuPage}}"> 
 		<div>EYES
-			<paper-input id="irisColorInput" label="iris color" value$="{{config.eyeColor}}"></paper-input>
-			<paper-input id="eyeYInput" label="eye y position" value$="{{eyeY}}"></paper-input>
+			<paper-input id="irisColorInput" label="iris color" value="{{config.eyeColor}}"></paper-input>
+			<paper-input id="eyeYInput" label="eye y position" value="{{eyeY}}"></paper-input>
 			<paper-input id="eyeHInput" label="eye height" value="{{eyeH}}"></paper-input>
 			<paper-input id="eyeWInput" label="eye width" value="{{eyeW}}"></paper-input>
 		</div>
