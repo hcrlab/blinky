@@ -6,14 +6,9 @@ Blinky is primarily designed and tested for Chrome on a Nexus 7 (2013) tablet.
 ![blinky](https://cloud.githubusercontent.com/assets/1175286/12600875/baf9204c-c451-11e5-98f5-7fbaa8b57a9e.png)
 
 ## Getting started
-- Install the latest version of node:
-
-  ```bash
-  curl -sL https://deb.nodesource.com/setup_5.x | sudo -E bash -
-  sudo apt-get install -y nodejs
-  ```
+- Install the latest version of node using [nvm](https://github.com/creationix/nvm)
 - Clone this repository to your catkin workspace and build it.
-- From the `frontend` folder, run `sudo npm install -g gulp bower` and then `npm install && bower install`
+- From the `frontend` folder, run `npm install -g gulp bower` and then `npm install && bower install`
 - Run `roslaunch rosbridge_server rosbridge_websocket.launch`
 - Run `gulp serve` and go to `localhost:5001` to see the face.
 - It's recommended that you add the app to the device's homescreen, so that the app can be run full-screen.
@@ -55,16 +50,16 @@ sudo cp -r dist /var/www/blinky
 ### Set up Apache
 Install Apache if you don't already have it: `sudo apt-get install apache2`
 
-In our setup, we are going to serve the website from port 8080.
-The URL will be something like `robot.university.edu:8080/blinky`
+In our setup, we are going to serve the website from port 8000.
+The URL will be something like `robot.university.edu:8000/`
 This allows us to serve the website from the robot's computer via USB, thanks to Chrome's port forwarding / mobile device debugging feature.
 
 See DigitalOcean's [guide to configuring Apache](https://www.digitalocean.com/community/tutorials/how-to-configure-the-apache-web-server-on-an-ubuntu-or-debian-vps) for a great primer on configuring Apache.
 
-Create the file /etc/apache2/blinky:
+Create the file /etc/apache2/sites-available/blinky.conf:
 ```ApacheConf
-Listen 8080
-<VirtualHost *:8080>
+Listen 8000
+<VirtualHost *:8000>
   ServerAdmin webmaster@localhost
   ServerName robot.university.edu
   ServerAlias robot
@@ -83,6 +78,7 @@ Listen 8080
     AllowOverride None
     Order allow,deny
     allow from all
+    require all granted
   </Directory>
 
   ErrorLog ${APACHE_LOG_DIR}/error.log
@@ -95,7 +91,7 @@ Listen 8080
 </VirtualHost>
 ```
 
-Enable the blinky site using `sudo a2ensite blinky`.
+Enable the blinky site using `sudo a2ensite blinky.conf`.
 Then, restart the Apache service with `sudo service apache2 reload`.
 
 ### Load the page on the tablet
@@ -112,7 +108,7 @@ google-chrome
 On the tablet, enable USB debugging (see [Remote Debugging Devices](https://developers.google.com/web/tools/chrome-devtools/debug/remote-debugging/remote-debugging?hl=en)).
 From Chrome, go to `chrome://inspect`.
 You should see the Nexus 7 in the device list.
-Go to port forwarding and forward port 8080 to `localhost:8080` and port 9090 to `localhost:9090`, which is necessary for the rosbridge websocket connection (see [Remote Access to Your Local Site](https://developers.google.com/web/tools/chrome-devtools/debug/remote-debugging/local-server?hl=en)).
+Go to port forwarding and forward port 8000 to `localhost:8000` and port 9090 to `localhost:9090`, which is necessary for the rosbridge websocket connection (see [Remote Access to Your Local Site](https://developers.google.com/web/tools/chrome-devtools/debug/remote-debugging/local-server?hl=en)).
 
 ## Behaviors
 ### displayMessage(h1_text, h2_text)
