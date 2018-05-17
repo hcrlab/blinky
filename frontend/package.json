@@ -39,5 +39,9 @@
   },
   "engines": {
     "node": ">=0.10.0"
+  },
+  "dependencies": {
+    "js-yaml": "^3.11.0",
+    "polymer-modulizer": "github:Polymer/polymer-modulizer"
   }
 }
