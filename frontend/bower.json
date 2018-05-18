@@ -1,20 +1,18 @@
 {
-  "name": "polymer-starter-kit",
-  "private": true,
+  "name": "blinky",
+  "main": "index.html",
   "dependencies": {
-    "iron-elements": "PolymerElements/iron-elements#^1.0.0",
-    "neon-elements": "PolymerElements/neon-elements#^1.0.0",
-    "page": "visionmedia/page.js#~1.6.4",
-    "paper-elements": "PolymerElements/paper-elements#^1.0.1",
-    "platinum-elements": "PolymerElements/platinum-elements#^1.1.0",
-    "polymer": "Polymer/polymer#^1.2.0",
-    "paper-menu": "PolymerElements/paper-menu#4fecb43601"
+    "polymer": "Polymer/polymer#^2.0.0",
+    "iron-icon": "PolymerElements/iron-icon#^2.1.0",
+    "paper-tooltip": "PolymerElements/paper-tooltip#^2.1.1",
+    "iron-pages": "PolymerElements/iron-pages#^2.1.1",
+    "paper-button": "PolymerElements/paper-button#^2.1.1",
+    "font-roboto": "PolymerElements/font-roboto#^1.1.0",
+    "paper-styles": "PolymerElements/paper-styles#^2.1.0",
+    "iron-icons": "PolymerElements/iron-icons#^2.1.1"
   },
   "devDependencies": {
-    "web-component-tester": "*"
-  },
-  "ignore": [],
-  "resolutions": {
-    "paper-menu": "4fecb43601"
+    "web-component-tester": "Polymer/web-component-tester#^6.0.0",
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^1.0.0"
   }
 }

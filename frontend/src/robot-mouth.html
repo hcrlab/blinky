@@ -1,0 +1,32 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+
+<dom-module id="robot-mouth">
+  <template>
+    <style>
+      :host {
+        display: block;
+        width: 50px;
+        height: 20px;
+      }
+      #mouth {
+        position: absolute;
+        bottom: 0;
+      }
+    </style>
+    <div id="mouth">
+      <svg width="50px" height="20px">
+        <path d="M0 10 C 10 15, 40 15, 50 10" stroke="white" stroke-width="3" fill="transparent"/>
+      </svg>
+    </div>
+  </template>
+  <script>
+    class RobotMouth extends Polymer.Element {
+      static get is() { return 'robot-mouth'; }
+      static get properties() {
+        return {};
+      }
+    }
+
+    window.customElements.define(RobotMouth.is, RobotMouth);
+  </script>
+</dom-module>

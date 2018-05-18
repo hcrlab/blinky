@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+    <title>Blinky</title>
+    <meta name="description" content="Blinky!">
+    <meta name="application-name" content="Blinky">
+
+    <!-- See https://goo.gl/OOhYW5 -->
+    <link rel="manifest" href="/manifest.json">
+
+    <meta name="theme-color" content="#2E3AA1">
+    <meta name="mobile-web-app-capable" content="yes">
+    <link rel="icon" sizes="100x100" href="images/hcrlab-100x100.png">
+
+    <style>
+      html, body {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        width: 100%;
+      }
+    </style>
+
+    <script src="/bower_components/webcomponentsjs/webcomponents-loader.js"></script>
+    <script src="/scripts/eventemitter2.js"></script>
+    <script src="/scripts/roslib.js"></script>
+
+    <link rel="import" href="/src/blinky-app.html">
+  </head>
+  <body>
+    <blinky-app></blinky-app>
+  </body>
+</html>

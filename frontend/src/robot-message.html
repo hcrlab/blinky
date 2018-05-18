@@ -1,0 +1,99 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/font-roboto/roboto.html">
+<link rel="import" href="../bower_components/paper-styles/element-styles/paper-material-styles.html">
+<link rel="import" href="shared-styles.html">
+
+<dom-module id="robot-message">
+  <template>
+    <style is="custom-style" include="shared-styles"></style>
+    <style include="paper-material-styles"></style>
+    <style>
+      :host {
+        display: block;
+        margin-bottom: 30px;
+        font-family: 'Roboto', sans-serif;
+      }
+      .speech {
+        background-color: #fff;
+        margin: 1em;
+        padding: 1em;
+        position: relative;
+        max-width: 90%;
+      }
+      
+      .speech:after {
+        border-color: #fff transparent;
+        border-style: solid;
+        border-width: 15px 15px 0;
+        bottom: -15px;
+        content: "";
+        display: block;
+        left: 10px;
+        position: absolute;
+        width: 0;
+      }
+
+      .speech.user {
+        margin-left: 40px;
+        text-align: right;
+      }
+
+      .speech.user:after {
+        right: 10px;
+        left: initial;
+      }
+
+      .speech > ::slotted(.centered) {
+        text-align: center;
+      }
+
+      .speech > ::slotted(.disp4) {
+        font-weight: lighter;
+        font-size: 112px;
+      }
+      .speech > ::slotted(.disp3) {
+        font-size: 56px;
+      }
+      .speech > ::slotted(.disp2) {
+        font-size: 45px;
+      }
+      .speech > ::slotted(.disp1) {
+        font-size: 34px;
+      }
+
+      .speech > ::slotted(paper-button) {
+        text-transform: none;
+        font-size: 36px;
+        font-weight: 500;
+        letter-spacing: 0.018em;
+        line-height: 24px;
+        background-color: #e0e0e0;
+        color: var(--primary-text-color);
+        margin: 8px;
+      }
+      .speech > ::slotted(paper-button.onlyChoice) {
+        background-color: var(--accent-color);
+      }
+      div {
+        @apply --paper-material-elevation-1;
+      }
+    </style>
+    <div class$="speech {{speaker}}">
+      <slot></slot>
+    </div>
+  </template>
+  <script>
+    class RobotMessage extends Polymer.Element {
+      static get is() { return 'robot-message'; }
+      static get properties() {
+        return {
+          speaker: {
+            type: String,
+          }
+        };
+      }
+    }
+
+    window.customElements.define(RobotMessage.is, RobotMessage);
+  </script>
+</dom-module>

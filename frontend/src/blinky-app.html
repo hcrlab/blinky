@@ -1,0 +1,190 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../bower_components/iron-icon/iron-icon.html">
+<link rel="import" href="../bower_components/iron-pages/iron-pages.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/paper-tooltip/paper-tooltip.html">
+<link rel="import" href="robot-face.html">
+<link rel="import" href="robot-message.html">
+
+<dom-module id="blinky-app">
+  <template>
+    <style>
+      :host {
+        display: block;
+        height: 100%;
+        width: 100%;
+        background-color: #512DA8;
+      }
+      .warning {
+        color: #FFEB3B;
+        text-align: center;
+        margin-top: 50px;
+      }
+      .warning iron-icon {
+        --iron-icon-width: 56px;
+        --iron-icon-height: 56px;
+      }
+      robot-face {
+        height: 100%;
+      }
+      paper-tooltip {
+        --paper-tooltip: {
+          font-family: 'Roboto', sans-serif;
+          font-size: 1.5em;
+        };
+        --paper-tooltip-delay-in: 0;
+      }
+      [hidden] {
+        display: none;
+      }
+    </style>
+    <robot-face>
+      <div class="warning" hidden$="[[isConnected]]">
+        <iron-icon icon="warning" on-tap="_showWarningTooltip"></iron-icon>
+        <paper-tooltip id="warningTooltip" animationDelay="0">Uh oh! There is a problem with the robot.</paper-tooltip>
+      </div>
+      <iron-pages attr-for-selected="data-type" selected="{{displayType}}">
+        <div data-type="default"></div> 
+        <div data-type="displayMessage">
+          <robot-message>
+            <div class="centered disp4">{{h1Text}}</div>
+            <div class="centered disp3">{{h2Text}}</div>
+          </robot-message>
+        </div> 
+        <div data-type="askMultipleChoice">
+          <robot-message>
+            <div class="disp3">{{question}}</div>
+          </robot-message>
+          <robot-message speaker="user" >
+            <template is="dom-repeat" items="{{choices}}">
+              <paper-button raised class$="{{isOnlyChoice}}" data-choice$="{{item}}" on-tap="_onChoice">{{item}}</paper-button>
+            </template>
+          </robot-message>
+        </div>
+      </iron-pages>
+    </robot-face>
+  </template>
+  <script>
+    class BlinkyApp extends Polymer.Element {
+      static get is() { return 'blinky-app'; }
+      static get properties() {
+        return {
+          displayType: {
+            type: String,
+            value: 'default',
+          },
+          h1Text: {
+            type: String,
+            value: '',
+          },
+          h2Text: {
+            type: String,
+            value: '',
+          },
+          question: {
+            type: String,
+          },
+          choices: {
+            type: Array,
+          },
+          isOnlyChoice: {
+            type: Boolean,
+            computed: '_computeIsOnlyChoice(choices)',
+          },
+          isConnected: {
+            type: Boolean,
+            value: false
+          }
+        };
+      }
+
+      ready() {
+        super.ready();
+
+        var websocketUrl = this.websocketUrl();
+        this.ros = new ROSLIB.Ros({
+          url: websocketUrl
+        });
+
+        var that = this;
+        this.ros.on('connection', function() {
+          console.log('Connected to websocket server.');
+          that.isConnected = true;
+        });
+
+        this.ros.on('error', function() {
+          console.error('Error connecting to websocket server');
+          that.isConnected = false;
+        });
+
+        this.ros.on('close', function() {
+          console.log('Connection to websocket server closed.');
+          that.isConnected = false;
+          setTimeout(function() {
+            console.warn('Trying to connect after close');
+            that.ros.connect(websocketUrl);
+          }, 10000);
+        });
+
+        this.server = new ROSLIB.SimpleActionServer({
+          ros: that.ros,
+          serverName: '/blinky',
+          actionName: 'blinky/FaceAction',
+        });
+
+        this.server.on('goal', function(goalMessage) {
+          that.displayType = goalMessage.display_type;
+          that.h1Text = goalMessage.h1_text;
+          that.h2Text = goalMessage.h2_text;
+          that.question = goalMessage.question;
+          that.choices = goalMessage.choices;
+          if (that.displayType === 'displayMessage' || that.displayType === 'default') {
+            this.setSucceeded();
+          }
+        });
+        this.server.on('cancel', function() {
+          that.displayType = 'default';
+          this.setPreempted();
+        });
+      }
+
+      websocketUrl() {
+        var hostname = window.location.hostname;
+        var protocol = 'ws:';
+        if (window.location.protocol == 'https:') {
+          protocol = 'wss:'
+        }
+        return protocol + '//' + hostname + ':9090';
+      }
+
+      _computeIsOnlyChoice(choices) {
+        if (choices && choices.length === 1) {
+          return 'onlyChoice';
+        } else {
+          return '';
+        }
+      }
+
+      _showWarningTooltip() {
+        var tooltip = this.shadowRoot.querySelector('#warningTooltip');
+        if (tooltip.isShowing) {
+          tooltip.isShowing = false;
+          tooltip.hide();
+        } else {
+          tooltip.isShowing = true;
+          tooltip.show();
+        }
+      }
+
+      _onChoice(evt) {
+        var result = new ROSLIB.Message({
+          choice: evt.target.innerText
+        });
+        this.server.setSucceeded(result);
+      }
+    }
+
+    window.customElements.define(BlinkyApp.is, BlinkyApp);
+  </script>
+</dom-module>
