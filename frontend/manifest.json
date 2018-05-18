@@ -1,6 +1,7 @@
 {
-  "name": "blinky",
-  "short_name": "blinky",
+  "name": "Blinky",
+  "short_name": "Blinky",
   "start_url": "/",
-  "display": "standalone"
+  "display": "standalone",
+  "background_color": "#512DA8"
 }
