@@ -8,9 +8,9 @@ Blinky is primarily designed and tested for Chrome on a Nexus 7 (2013) tablet.
 ## Getting started
 - Install the latest version of node using [nvm](https://github.com/creationix/nvm)
 - Clone this repository to your catkin workspace and build it.
-- From the `frontend` folder, run `npm install -g gulp bower` and then `npm install && bower install`
+- From the `frontend` folder, run `npm install -g bower polymer-cli` and then `npm install && bower install`
 - Run `roslaunch rosbridge_server rosbridge_websocket.launch`
-- Run `gulp serve` and go to `localhost:5001` to see the face.
+- Run `polymer serve` and go to the generated URL to see the face.
 - It's recommended that you add the app to the device's homescreen, so that the app can be run full-screen.
   In Chrome, tap the menu button in the top right (the "three dots") and tap "Add to Home screen."
   On Android 5.0 (Lollipop) and above, you can additionally pin the app using Screen Pinning to hide the notification bar.
@@ -43,8 +43,8 @@ We assume that a Nexus 7 tablet is connected to the laptop via USB.
 ### Build the website
 ```bash
 cd frontend
-gulp
-sudo cp -r dist /var/www/blinky
+polymer build
+sudo cp -r build/default /var/www/blinky
 ```
 
 ### Set up Apache
@@ -121,4 +121,4 @@ This will make the robot ask a question on screen.
 The choice the user selects will be returned as the actionlib result.
 If there is only one choice, the button will be colored, otherwise they are grey.
 
-More behaviors coming soon!
+If you are interested in helping us create more behaviors, please let us know!
